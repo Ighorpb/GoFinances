@@ -1,40 +1,28 @@
-// Libs
 import React from 'react';
 import { ThemeProvider } from 'styled-components';
-import * as SplashScreen from 'expo-splash-screen';
 
-// Fonts
-import {
-  useFonts,
-  Poppins_400Regular,
-  Poppins_500Medium,
-  Poppins_700Bold
-} from '@expo-google-fonts/poppins';
+import { useFonts, Poppins_400Regular, Poppins_500Medium, Poppins_700Bold } from '@expo-google-fonts/poppins';
+import * as Splashscreen from 'expo-splash-screen'
 
-// Styles
-import theme from './src/global/styles/theme';
 import { Dashboard } from './src/screens/Dashboard';
+import theme from './src/global/styles/theme';
 
-// Main Body
 export default function App() {
-  SplashScreen.preventAutoHideAsync();
-  const [fontsLoaded] = useFonts({
+  Splashscreen.preventAutoHideAsync();
+  const [fontsLoaded] = useFonts({ // Carregamento das fontes
     Poppins_400Regular,
     Poppins_500Medium,
     Poppins_700Bold
   });
 
   if (!fontsLoaded) {
-    return null;
+    return null; // Enquanto as fontes não estiverem disponíveis/carregadas, devolveremos null.
   }
 
-  SplashScreen.hideAsync();
+  Splashscreen.hideAsync();
   return (
-
     <ThemeProvider theme={theme}>
       <Dashboard />
     </ThemeProvider>
   )
-
 }
-
