@@ -7,6 +7,9 @@ import * as Splashscreen from 'expo-splash-screen'
 import { Dashboard } from './src/screens/Dashboard';
 import theme from './src/global/styles/theme';
 
+import { StatusBar } from 'react-native';
+
+
 export default function App() {
   Splashscreen.preventAutoHideAsync();
   const [fontsLoaded] = useFonts({ // Carregamento das fontes
@@ -21,8 +24,11 @@ export default function App() {
 
   Splashscreen.hideAsync();
   return (
+    <>
+      <StatusBar barStyle="light-content" />
     <ThemeProvider theme={theme}>
       <Dashboard />
     </ThemeProvider>
+    </>
   )
 }
