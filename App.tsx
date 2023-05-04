@@ -4,7 +4,7 @@ import { ThemeProvider } from 'styled-components';
 import { useFonts, Poppins_400Regular, Poppins_500Medium, Poppins_700Bold } from '@expo-google-fonts/poppins';
 import * as Splashscreen from 'expo-splash-screen'
 
-import { Dashboard } from './src/screens/Dashboard';
+import { CategorySelect } from './src/screens/CategorySelect';
 import theme from './src/global/styles/theme';
 
 import { StatusBar } from 'react-native';
@@ -27,7 +27,7 @@ export default function App() {
     <>
       <StatusBar barStyle="light-content" />
     <ThemeProvider theme={theme}>
-      <Dashboard />
+        <CategorySelect />
     </ThemeProvider>
     </>
   )
