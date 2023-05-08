@@ -19,10 +19,11 @@ export const Container = styled(TouchableOpacity)<ContainerProps>`
   align-items: center;
   justify-content: center;
 
-  border:  ${({ isActive }) => isActive ? 0 : 1.5}px; 
-  border-style: solid; 
-  border-color:${({ theme }) => theme.colors.text};
+  border: ${({ isActive }) => (isActive ? 0 : 1.5)}px;
+  border-style: solid;
+  border-color: ${({ theme }) => theme.colors.text};
   border-radius: 5px;
+  margin-bottom: 16px;
 
   padding: 16px;
 
