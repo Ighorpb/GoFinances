@@ -41,3 +41,4 @@ export const TransactionsTypes = styled.View`
 
 
 
+  
