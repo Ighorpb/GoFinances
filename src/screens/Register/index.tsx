@@ -39,7 +39,6 @@ export function Register() {
     const [transactionsType, setTransactionsType] = useState('')
     const [categoryModalOpen, setCategoryModalOpen] = useState(false)
 
-    const dataKey = '@gofinance:transactions';
 
 
     const [category, setCategory] = useState({
@@ -85,6 +84,7 @@ export function Register() {
 
 
         try {
+            const dataKey = '@gofinance:transactions';
 
             const data = await AsyncStorage.getItem(dataKey);
             const currentData = data && data.length ? JSON.parse(data) : []

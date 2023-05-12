@@ -14,6 +14,7 @@ import { AppRoutes } from './src/routes/app.routes';
 import { StatusBar } from 'react-native';
 
 
+
 export default function App() {
   Splashscreen.preventAutoHideAsync();
   const [fontsLoaded] = useFonts({ // Carregamento das fontes
@@ -29,12 +30,14 @@ export default function App() {
   Splashscreen.hideAsync();
   return (
     <>
+      
       <StatusBar barStyle="light-content" />
       <ThemeProvider theme={theme}>
         <NavigationContainer>
           <AppRoutes />
         </NavigationContainer>
       </ThemeProvider>
+
 
     </>
   )
