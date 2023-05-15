@@ -13,6 +13,10 @@ import { AppRoutes } from './src/routes/app.routes';
 
 import { StatusBar } from 'react-native';
 
+import { SignIn } from './src/screens/SignIn';
+
+import { AuthProvider } from './src/hooks/auth';
+
 
 
 export default function App() {
@@ -34,7 +38,9 @@ export default function App() {
       <StatusBar barStyle="light-content" />
       <ThemeProvider theme={theme}>
         <NavigationContainer>
-          <AppRoutes />
+          <AuthProvider>
+          <SignIn />
+          </AuthProvider>
         </NavigationContainer>
       </ThemeProvider>
 
