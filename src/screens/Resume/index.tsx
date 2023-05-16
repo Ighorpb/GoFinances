@@ -54,7 +54,7 @@ export function Resume() {
 
 
     async function loadData() {
-        const dataKey = '@gofinance:transactions';
+        const dataKey = '@gofinances:transactions';
         const response = await AsyncStorage.getItem(dataKey);
         const responseFormatted = response && response.length ? JSON.parse(response) : []
 

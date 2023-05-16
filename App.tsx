@@ -2,7 +2,6 @@ import React from 'react';
 import 'intl';
 import 'intl/locale-data/jsonp/pt-BR'
 import { ThemeProvider } from 'styled-components';
-
 import { useFonts, Poppins_400Regular, Poppins_500Medium, Poppins_700Bold } from '@expo-google-fonts/poppins';
 import * as Splashscreen from 'expo-splash-screen'
 

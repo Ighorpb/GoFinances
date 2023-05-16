@@ -1,30 +1,25 @@
 import React from "react";
-import { RectButtonProps } from "react-native-gesture-handler";
+import { TouchableOpacityProps } from "react-native";
 import { SvgProps } from "react-native-svg";
 
-import { 
+import {
     Button,
     ImageContainer,
     Text
+} from "./style";
 
- } from "./style";
-
-interface Props extends RectButtonProps {
+interface Props extends TouchableOpacityProps {
     title: string;
-    svg: React.FC<SvgProps>
+    svg: React.FC<SvgProps>;
 }
 
-export function SignInSocialButton({title, svg: Svg, ...rest}: Props) {
-
+export function SignInSocialButton({ title, svg: Svg, ...rest }: Props) {
     return (
         <Button {...rest}>
-             <ImageContainer>
+            <ImageContainer>
                 <Svg />
-             </ImageContainer>
-
-             <Text>
-                {title}
-             </Text>
+            </ImageContainer>
+            <Text>{title}</Text>
         </Button>
-    )
+    );
 }
