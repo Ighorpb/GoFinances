@@ -1,5 +1,6 @@
 import React, { useState, useEffect, useCallback } from 'react';
 import AsyncStorage from "@react-native-async-storage/async-storage";
+import { isValid } from 'date-fns';
 import { HighlightCard } from '../../components/HighlighCard';
 import { TransactionCard, TransactionCardProps } from '../../components/TransactionCard';
 import { useFocusEffect } from '@react-navigation/native';
@@ -44,66 +45,74 @@ export function Dashboard() {
     function getLastTransactionDate(
         collections: DataListProps[],
         type: 'positive' | 'negative'
-    ) {
-        const lastTransaction =
-            Math.max.apply(Math, collections
+    ): string {
+        const lastTransaction = Math.max(
+            ...collections
                 .filter(transaction => transaction.type === type)
-                .map(transaction => new Date(transaction.date).getTime()));
+                .map(transaction => {
+                    const transactionDate = new Date(transaction.date);
+                    return transactionDate instanceof Date && !isNaN(transactionDate.getTime())
+                        ? transactionDate.getTime()
+                        : 0;
+                })
+        );
 
-        return Intl.
-            DateTimeFormat('pt-BR', {
-                day: '2-digit',
-                month: '2-digit',
-                year: '2-digit'
-            }).format(new Date(lastTransaction));
+        const formattedDate = new Date(lastTransaction).toLocaleDateString('pt-BR', {
+            day: '2-digit',
+            month: '2-digit',
+            year: '2-digit'
+        });
 
+        return formattedDate;
     }
 
     async function loadTransactions() {
         const dataKey = '@gofinances:transactions';
         const response = await AsyncStorage.getItem(dataKey);
+        // await AsyncStorage.removeItem(dataKey);
         const transactions = response ? JSON.parse(response) : [];
 
         let entriesTotal = 0;
         let expensiveTotal = 0;
 
-        const transactionsFormatted: DataListProps[] = transactions
-            .map((item: DataListProps) => {
+        const transactionsFormatted: DataListProps[] = transactions.map((item: DataListProps) => {
+            if (item.type === 'positive') {
+                entriesTotal += Number(item.amount);
+            } else {
+                expensiveTotal += Number(item.amount);
+            }
 
-                if (item.type === 'positive') {
-                    entriesTotal += Number(item.amount);
-                } else {
-                    expensiveTotal += Number(item.amount);
-                }
+            const parsedDate = new Date(item.date);
+            const isDateValid = isValid(parsedDate);
 
-                const amount = Number(item.amount).toLocaleString('pt-BR', {
-                    style: 'currency',
-                    currency: 'BRL'
+            const amount = Number(item.amount).toLocaleString('pt-BR', {
+                style: 'currency',
+                currency: 'BRL'
+            });
 
-                });
-
-                const date = Intl.DateTimeFormat('pt-BR', {
+            const date = isDateValid
+                ? Intl.DateTimeFormat('pt-BR', {
                     day: '2-digit',
                     month: '2-digit',
                     year: '2-digit'
-                }).format(new Date(item.date));
+                }).format(parsedDate)
+                : 'Data inválida';
 
-
-                return {
-                    id: item.id,
-                    name: item.name,
-                    amount,
-                    type: item.type,
-                    category: item.category,
-                    date,
-                }
-            });
+            return {
+                id: item.id,
+                name: item.name,
+                amount,
+                type: item.type,
+                category: item.category,
+                date
+            };
+        });
 
         setTransactions(transactionsFormatted)
 
         const lastTransactionsEntries = getLastTransactionDate(transactions, 'positive')
         const lastTransactionsExpensive = getLastTransactionDate(transactions, 'negative')
-        const totalInverval = `${lastTransactionsEntries} a ${lastTransactionsExpensive}`
+        const totalInterval = `${lastTransactionsEntries} a ${lastTransactionsExpensive}`
 
         const total = entriesTotal - expensiveTotal
 
@@ -113,25 +122,23 @@ export function Dashboard() {
                     style: 'currency',
                     currency: 'BRL'
                 }),
-                lastTransaction: `Ultima entrada dia: ${lastTransactionsEntries}`,
+                lastTransaction: `Última entrada dia ${lastTransactionsEntries}`,
             },
             expensive: {
                 amount: expensiveTotal.toLocaleString('pt-BR', {
                     style: 'currency',
                     currency: 'BRL'
                 }),
-                lastTransaction: `Ultima saída dia: ${lastTransactionsExpensive}`,
-
+                lastTransaction: `Última saída dia ${lastTransactionsExpensive}`,
             },
             total: {
                 amount: total.toLocaleString('pt-BR', {
                     style: 'currency',
-                    currency: 'BRL',
+                    currency: 'BRL'
                 }),
-                lastTransaction: `${totalInverval}`
-            }
-        });
-
+                lastTransaction: totalInterval
+            },
+        })
     }
 
     useEffect(() => {
@@ -201,4 +208,3 @@ export function Dashboard() {
         </Container>
     )
 }
-

@@ -7,7 +7,7 @@ import * as Splashscreen from 'expo-splash-screen'
 
 import theme from './src/global/styles/theme';
 
-import { NavigationContainer } from '@react-navigation/native';
+import { Routes } from './src/routes';
 import { AppRoutes } from './src/routes/app.routes';
 
 import { StatusBar } from 'react-native';
@@ -33,14 +33,12 @@ export default function App() {
   Splashscreen.hideAsync();
   return (
     <>
-      
+
       <StatusBar barStyle="light-content" />
       <ThemeProvider theme={theme}>
-        <NavigationContainer>
-          <AuthProvider>
-          <SignIn />
-          </AuthProvider>
-        </NavigationContainer>
+        <AuthProvider>
+          <Routes />
+        </AuthProvider>
       </ThemeProvider>
 
 
